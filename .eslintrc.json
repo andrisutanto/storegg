@@ -22,6 +22,7 @@
     "rules": {
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx", ".ts"] }],
         "react/react-in-jsx-scope": "off",
-        "eslint linebreak-style": ["error", "windows"]
+        "eslint linebreak-style": ["error", "windows"],
+        "jsx-a11y/anchor-is-valid": "off"
     }
 }
