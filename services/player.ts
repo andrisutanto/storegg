@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import callAPI from '../config/api';
+import callAPI from '../config/api';
 // import { CheckoutTypes } from './data-types';
 
 const ROOT_API = process.env.NEXT_PUBLIC_API;

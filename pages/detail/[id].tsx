@@ -1,35 +1,20 @@
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
-import Footer from '../../components/organism/Footer';
-import Navbar from '../../components/organism/Navbar';
-import TopUpForm from '../../components/organism/TopUpForm';
-import TopUpItem from '../../components/organism/TopUpItem';
-import { getDetailVoucher } from '../../services/player';
+import { useEffect } from 'react';
+import Footer from '../../components/organisms/Footer';
+import Navbar from '../../components/organisms/Navbar';
+import TopUpForm from '../../components/organisms/TopUpForm';
+import TopUpItem from '../../components/organisms/TopUpItem';
+import { GameItemTypes, NominalsTypes, PaymentTypes } from '../../services/data-types';
+import { getDetailVoucher, getFeaturedGame } from '../../services/player';
 
-export default function Detail() {
-  const { query, isReady } = useRouter();
-  const [dataItem, setDataItem] = useState({
-    name: '',
-    thumbnail: '',
-    category: {
-      name: '',
-    },
-  });
-
-  const getVoucherDetailAPI = useCallback(async (id) => {
-    const data = await getDetailVoucher(id);
-    console.log('data: ', data);
-    setDataItem(data.detail);
-  }, []);
-
+interface DetailProps {
+  dataItem: GameItemTypes;
+  nominals: NominalsTypes[];
+  payments: PaymentTypes[];
+}
+export default function Detail({ dataItem, nominals, payments }: DetailProps) {
   useEffect(() => {
-    if (isReady) {
-      console.log('Router sudah tersedia', query.id);
-      getVoucherDetailAPI(query.id);
-    } else {
-      console.log('router tidak tiersedia');
-    }
-  }, [isReady]);
+    localStorage.setItem('data-item', JSON.stringify(dataItem));
+  }, []);
   return (
     <>
       <Navbar />
@@ -46,7 +31,7 @@ export default function Detail() {
             <div className="col-xl-9 col-lg-8 col-md-7 ps-md-25">
               <TopUpItem data={dataItem} type="desktop" />
               <hr />
-              <TopUpForm />
+              <TopUpForm nominals={nominals} payments={payments} />
             </div>
           </div>
         </div>
@@ -54,4 +39,35 @@ export default function Detail() {
       <Footer />
     </>
   );
+}
+
+export async function getStaticPaths() {
+  const data = await getFeaturedGame();
+  const paths = data.map((item: GameItemTypes) => ({
+    params: {
+      id: item._id,
+    },
+  }));
+  return {
+    paths,
+    fallback: false,
+  };
+}
+
+interface GetStaticProps {
+  params: {
+    id: string;
+  }
+}
+
+export async function getStaticProps({ params }: GetStaticProps) {
+  const { id } = params;
+  const data = await getDetailVoucher(id);
+  return {
+    props: {
+      dataItem: data.detail,
+      nominals: data.detail.nominals,
+      payments: data.payment,
+    },
+  };
 }
