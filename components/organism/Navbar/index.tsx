@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import Auth from './Auth';
 import Menu from './Menu';
+import Auth from './Auth';
 import ToggleMenu from './ToggleMenu';
 
 export default function Navbar() {
@@ -16,10 +16,10 @@ export default function Navbar() {
             <ul className="navbar-nav ms-auto text-lg gap-lg-0 gap-2">
               <Menu title="Home" active />
               <Menu title="Games" href="/games" />
-              <Menu title="Rewards" />
+              <Menu title="Reward" />
               <Menu title="Discover" />
               <Menu title="Global Rank" />
-              <Auth isLogin />
+              <Auth />
             </ul>
           </div>
         </div>

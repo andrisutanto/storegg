@@ -1,9 +1,8 @@
-import CheckoutConfirmation from "../components/organism/CheckoutConfirmation";
-import CheckoutDetail from "../components/organism/CheckoutDetail";
-import CheckoutItem from "../components/organism/CheckoutItem";
-import Image from "next/image";
+import Image from 'next/image';
+import CheckoutConfirmation from '../components/organism/CheckoutConfirmation';
+import CheckoutDetail from '../components/organism/CheckoutDetail';
+import CheckoutItem from '../components/organism/CheckoutItem';
 
-/* eslint-disable jsx-a11y/label-has-associated-control */
 export default function Checkout() {
   return (
     <section className="checkout mx-auto pt-md-100 pb-md-145 pt-30 pb-30">
@@ -24,4 +23,28 @@ export default function Checkout() {
       </div>
     </section>
   );
+}
+
+interface GetServerSideProps {
+  req: {
+    cookies: {
+      token: string;
+    }
+  }
+}
+
+export async function getServerSideProps({ req }: GetServerSideProps) {
+  const { token } = req.cookies;
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/sign-in',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 }
