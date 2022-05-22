@@ -11,5 +11,5 @@ export default function ToggleMenu() {
     >
       <span className="navbar-toggler-icon" />
     </button>
-  )
+  );
 }
