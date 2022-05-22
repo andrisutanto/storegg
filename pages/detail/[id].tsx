@@ -67,7 +67,7 @@ export async function getStaticProps({ params }: GetStaticProps) {
     props: {
       dataItem: data.detail,
       nominals: data.detail.nominals,
-      payments: data.payment,
+      payments: data.payments,
     },
   };
 }

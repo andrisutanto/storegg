@@ -84,7 +84,6 @@ export default function TopUpForm(props: TopUpFormProps) {
         <p className="text-lg fw-medium color-palette-1 mb-md-10 mb-0">Payment Method</p>
         <fieldset id="paymentMethod">
           <div className="row justify-content-between">
-            {/* [CODE UPDATE] tambahkan key di PaymentItem */}
             {payments.map((payment) => payment.banks.map((bank) => (
               <PaymentItem
                 key={bank._id}

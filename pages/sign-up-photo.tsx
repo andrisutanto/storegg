@@ -58,9 +58,6 @@ export default function SignUpPhoto() {
     } else {
       toast.success('Register Berhasil');
       router.push('/sign-up-success');
-      // [CODE UPDATE] di tutorial saya simpan remove user-form disini,
-      // saya rubah remove nya menjadi di halaman setelahnya.
-      // localStorage.removeItem('user-form');
     }
   };
   return (

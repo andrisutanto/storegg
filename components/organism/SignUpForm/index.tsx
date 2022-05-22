@@ -1,63 +1,59 @@
 import { useState } from 'react';
-import Link from 'next/link';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import cx from 'classnames';
 import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
-import { setLogin } from '../../../services/auth';
 
-export default function SignInForm() {
+export default function SignUpForm() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
 
-  const onSubmit = async () => {
-    const data = {
+  const router = useRouter();
+  const className = {
+    label: cx('form-label text-lg fw-medium color-palette-1 mb-10'),
+  };
+
+  const onSubmit = () => {
+    const userForm = {
       email,
+      name,
       password,
     };
 
-    if (!email || !password) {
-      toast.error('Email dan Password wajib diisi!!!');
-    } else {
-      const response = await setLogin(data);
-      if (response.error) {
-        toast.error(response.message);
-      } else {
-        toast.success('Login Berhasil');
-        const { token } = response.data;
-        const tokenBase64 = btoa(token);
-        Cookies.set('token', tokenBase64, { expires: 1 });
-        router.push('/');
-      }
-    }
+    localStorage.setItem('user-form', JSON.stringify(userForm));
+    router.push('/sign-up-photo');
   };
-
   return (
     <>
-      <h2 className="text-4xl fw-bold color-palette-1 mb-10">Sign In</h2>
-      <p className="text-lg color-palette-1 m-0">Masuk untuk melakukan proses top up</p>
+      <h2 className="text-4xl fw-bold color-palette-1 mb-10">Sign Up</h2>
+      <p className="text-lg color-palette-1 m-0">Daftar dan bergabung dengan kami</p>
       <div className="pt-50">
-        <label className="form-label text-lg fw-medium color-palette-1 mb-10">
-          Email Address
-        </label>
+        <label className={className.label}>Full Name</label>
+        <input
+          type="text"
+          className="form-control rounded-pill text-lg"
+          aria-describedby="name"
+          placeholder="Enter your name"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+        />
+      </div>
+      <div className="pt-30">
+        <label className={className.label}>Email Address</label>
         <input
           type="email"
           className="form-control rounded-pill text-lg"
+          aria-describedby="email"
           placeholder="Enter your email address"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
       </div>
       <div className="pt-30">
-        <label
-          className="form-label text-lg fw-medium color-palette-1 mb-10"
-        >
-          Password
-        </label>
+        <label className={className.label}>Password</label>
         <input
           type="password"
           className="form-control rounded-pill text-lg"
+          aria-describedby="password"
           placeholder="Your password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
@@ -66,18 +62,20 @@ export default function SignInForm() {
       <div className="button-group d-flex flex-column mx-auto pt-50">
         <button
           type="button"
-          className="btn btn-sign-in fw-medium text-lg text-white rounded-pill mb-16"
+          className="btn btn-sign-up fw-medium text-lg text-white rounded-pill mb-16"
           onClick={onSubmit}
         >
-          Continue to Sign In
+          Continue
         </button>
-        <Link href="/sign-up">
-          <a
-            className="btn btn-sign-up fw-medium text-lg color-palette-1 rounded-pill"
-          >
-            Sign Up
-          </a>
-        </Link>
+        <a
+          className="btn btn-sign-in fw-medium text-lg color-palette-1 rounded-pill"
+          href="/sign-in"
+          role="button"
+        >
+          Sign
+          In
+
+        </a>
       </div>
     </>
   );
